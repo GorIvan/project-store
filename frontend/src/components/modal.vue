@@ -1,23 +1,12 @@
 <template>
-    <div class="modal_window log_form" v-show="this.visible">
-		<div class="cross" v-on:click="close()">
-			<div></div>
-			<div></div>
-		</div>
-		<div>
-			<div class="input_block">
-				<input type="text" id="signin_username" class="text-input" maxlength="20" placeholder="Login or email">
+    <div class="modal-backdrop" v-show="this.visible"">
+		<div class="modal-content">
+			<div class="cross" v-on:click="close()">
+				<div></div>
+				<div></div>
 			</div>
-			<div class="input_block">
-				<input type="text" id="signin_pass" class="text-input" maxlength="20" placeholder="Password">
-			</div>
-			<div class="input_block">
-				<input type="text" id="confirm_pass" class="text-input" maxlength="20" placeholder="Confirm password">
-			</div>
-		</div>	
-		<button class="button" v-on:click="">
-	    		Sign Up
-	    </button>
+			<slot name="modal-content"></slot>
+		</div>		
 	</div>
 </template>
 
@@ -42,17 +31,19 @@
   		align-items: center;
   		flex-direction: column;
 	}
-	.modal_window {
+	.modal-backdrop  {
 		position: fixed;
-		top: 105px;
+        z-index: 999;
+        left: 0px;
+        top: 0px;
+        bottom: 0px;
+        right: 0px;
+		background: rgba(0, 0, 0, 0.6);
 	}
-	.cont {
-		font-size: 40px;
-		text-align: center;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
+	/*размер окна будет зависить от подключаемого контента*/
+	.modal-content {
+		position: fixed;
+		top: 100px;
 	}
 	.cross {
 		position: absolute;

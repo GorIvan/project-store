@@ -1,10 +1,16 @@
 <template>
-  <div class="login">
-  	<modal :visible="this.signUpVisible" @close='closeSignUp' />
+  <div class="login_block">
+  	
+  	<modal :visible="this.modalVisible" @close='closeModal'>
+  		<template v-slot:modal-content>
+			<registration />
+  		</template>
+  	</modal>
+
   	<span class="hello" v-show="this.loginVisible">
   		We greet you! Please log in or register.
   	</span>
-    <div class="log_form" v-show="this.loginVisible"> 
+    <div class="login_form"> 
     	<div>
 	    	<div class="input_block">
 	    		<input type="text" id="login_username" class="text-input" maxlength="20" placeholder="Login or email">
@@ -16,28 +22,25 @@
 	    		Sign In
 	    	</button>
     	</div>
-    	<div class="reg" v-on:click="openSignUp()">
+    	<div class="registration" v-on:click="openSignUp()">
 			Sign Up
 		</div>
     </div>
-    {{$store.getters.getPass}}
   </div>
 </template>
 
 <script>
+	import registration from '../components/reg';
 	import modal from '../components/modal';
-	import { mapMutations, mapActions, mapGetters } from 'vuex';
-
-console.log(mapActions , 'mapMutations');
 
 	export default {
 		data () {
 			return {
-				signUpVisible: false,
-				loginVisible: true
+				modalVisible: false
 			}
 		},	
 	    components: {
+	      registration: registration,
 	      modal: modal
 	    },
 	  	methods: {
@@ -45,12 +48,10 @@ console.log(mapActions , 'mapMutations');
 		  		this.$router.push ({path:'Main'})
 		  	},
 		  	openSignUp: function () {
-		  		this.signUpVisible = true;
-		  		this.loginVisible = false;
+		  		this.modalVisible = true;
 		  	},
-		  	closeSignUp: function () {
-		  		this.signUpVisible = false;
-		  		this.loginVisible = true;
+		  	closeModal: function () {
+		  		this.modalVisible = false
 		  	}
 	  	}	
 	}
@@ -69,9 +70,19 @@ console.log(mapActions , 'mapMutations');
   		margin-top: 30px;
   		margin-bottom: 30px;
 	}
-	.reg {
+	.login_block {
+		margin-top: 100px;
+	}
+	.registration {
 		cursor: pointer;
 		margin-top: 80px;
 		opacity: 0.2;
+	}
+	.login_form {
+		background: rgba(3,3,3,0.25);
+		box-shadow: 1px 1px 50px #000;
+		color: #ddd;
+		width: 350px;
+		height: 450px;
 	}
 </style>
