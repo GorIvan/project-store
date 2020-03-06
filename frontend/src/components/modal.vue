@@ -1,5 +1,5 @@
 <template>
-    <div class="modal-backdrop" v-show="this.visible"">
+    <div class="modal-backdrop" v-show="this.visible">
 		<div class="modal-content">
 			<div class="cross" v-on:click="close()">
 				<div></div>
@@ -17,9 +17,9 @@
 			visible: Boolean
 		},
 		methods: {
-			close () {
+			close() {
 			    this.$emit('close')
-			}	
+			}
 		}
 	}
 </script>
@@ -38,13 +38,22 @@
         top: 0px;
         bottom: 0px;
         right: 0px;
-		background: rgba(0, 0, 0, 0.6);
-	}
+		background: rgba(0, 0, 0, 0.7);
+	}  
 	/*размер окна будет зависить от подключаемого контента*/
 	.modal-content {
 		position: fixed;
 		top: 100px;
+		animation: showDiv 3s linear 1s slidein;
 	}
+	@keyframes showDiv {
+	    0%, 99% {
+	    	opacity: 0;
+	    }
+	    100% {
+	    	opacity: 1;
+	    }
+	}  
 	.cross {
 		position: absolute;
 	    width: 20px;

@@ -14,32 +14,54 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.post('/user', function (req, res) { // req - обьект запроса, res -- обьект ответа
+// проверяем логин/пароль
+app.post('/userlogin', function (req, res) { 
     var contentRec = JSON.parse(req.body);
 
-    fs.readFile("baza.json", 'utf-8', function (err, content) {
+    fs.readFile("database.json", 'utf-8', function (err, content) {
       var contentNoJson = JSON.parse(content);
-      
-      contentNoJson.forEach(function(item, i, arr) {
-        if (item.login == contentRec.login && item.pass == contentRec.pass) {
-          console.log(item.id);
-          res.send(JSON.stringify(item.id));
-        }
+      var result = contentNoJson.find(function(item, index, array) {
+         return (item.username == contentRec.username && item.pass == contentRec.pass)
       });
-      
-    });
- 
+          
+      if (result) {
+        res.status(200);
+        res.send(JSON.stringify(result.id));
+      } else {
+        res.status(401);
+        res.send(JSON.stringify('User not found'));
+      }     
+    }); 
+});
 
+// проверяем наличие юзера в базе при регистрации
+app.post('/usercheckname', function (req, res) { 
+    var contentRec = JSON.parse(req.body);    
+    fs.readFile("database.json", 'utf-8', function (err, content) {
+      var contentNoJson = JSON.parse(content);
+      var result = contentNoJson.find(function(item, index, array) {
+         return (item.username == contentRec.username)
+      });        
+      if (!result) {
+        res.status(200);
+        res.send(JSON.stringify('false'));
+        writeNewUser(contentRec, contentNoJson);
+      } else {
+        res.send(JSON.stringify('true'));
+      }     
+    }); 
 });
 
 
-// app.get('/users', function (req, res) { // req - обьект запроса, res -- обьект ответа
-//   const users = getDataFromDataBasse(); 
+function writeNewUser (user, database) {
+  var newdatabase = database;
+  newdatabase.push(user);
+  var contentJson = JSON.parse(newdatabase);
+  console.log (contentJson);
+  fs.writeFile('database.json', contentJson);
+}
 
-//   res.send(users);
-// });
 
-
-app.listen(3000, function () { // говорим на каком порту запускать нашу  NODE_JS  программу.
+app.listen(3000, function () { 
   console.log('Example app listening on port http://localhost:3000/');
 });

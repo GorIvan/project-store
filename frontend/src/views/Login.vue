@@ -7,22 +7,22 @@
   		</template>
   	</modal>
 
-  	<span class="hello" v-show="this.loginVisible">
-  		We greet you! Please log in or register.
+  	<span class="hello">
+  		{{headerText}}
   	</span>
     <div class="login_form"> 
     	<div>
 	    	<div class="input_block">
-	    		<input type="text" id="login_username" class="text-input" maxlength="20" placeholder="Login or email">
+	    		<input type="text" id="login_username" class="text-input" maxlength="20" placeholder="Login or email" v-model="user.username">
 	    	</div>
 	    	<div class="input_block">
-	    		<input type="text" id="login_pass" class="text-input" maxlength="20" placeholder="Password">
+	    		<input type="text" id="login_pass" class="text-input" maxlength="20" placeholder="Password" v-model="user.pass">
 	    	</div>
 	    	<button class="button" v-on:click="signIn()">
 	    		Sign In
 	    	</button>
     	</div>
-    	<div class="registration" v-on:click="openSignUp()">
+    	<div class="registration" v-bind:class="{backlightSignUp: isActive}" v-on:click="openSignUp()">
 			Sign Up
 		</div>
     </div>
@@ -32,11 +32,18 @@
 <script>
 	import registration from '../components/reg';
 	import modal from '../components/modal';
+	import sendAjax from '../utils/ajax';
 
 	export default {
 		data () {
 			return {
-				modalVisible: false
+				modalVisible: false,
+				headerText: 'We greet you! Please log in or register.',
+				isActive: false,
+				user: {
+					username: '', 
+					pass: ''
+				}
 			}
 		},	
 	    components: {
@@ -45,13 +52,26 @@
 	    },
 	  	methods: {
 		  	signIn: function () {
-		  		this.$router.push ({path:'Main'})
+		  		let userJson = JSON.stringify(this.user);
+		  		if (this.user.username && this.user.pass) { 
+		  			sendAjax('http://localhost:3000/userlogin', 'post', userJson)
+					    .then((response) => {
+					        this.$router.push ({path:'main'})       
+					    },
+					    (response) => {
+					    	this.headerText = 'User not found! Please sign up.'
+					    	this.isActive = true;
+					    })
+    			} else {
+    				alert('введите данные')
+    			}
 		  	},
 		  	openSignUp: function () {
 		  		this.modalVisible = true;
+		  		this.isActive = false;
 		  	},
 		  	closeModal: function () {
-		  		this.modalVisible = false
+		  		this.modalVisible = false;
 		  	}
 	  	}	
 	}
@@ -63,6 +83,12 @@
   		justify-content: center;
   		align-items: center;
   		flex-direction: column;
+	}
+	.backlightSignUp {
+		color: white;
+		opacity: 1 !important;
+		animation: blur 3s ease-out infinite;
+		text-shadow: 0px 0px 5px #fff, 0px 0px 7px #fff;
 	}
 	.hello {
 		font-size: 25px;
@@ -84,5 +110,28 @@
 		color: #ddd;
 		width: 350px;
 		height: 450px;
+	}
+	/*конечно же берем в интернетах уже готовый стиль чтобы выделить нашу информацию =)*/
+	@keyframes blur {
+	  	from {
+		    text-shadow:0px 0px 10px #fff,
+		      0px 0px 10px #fff, 
+		      0px 0px 25px #fff,
+		      0px 0px 25px #fff,
+		      0px 0px 25px #fff,
+		      0px 0px 25px #fff,
+		      0px 0px 25px #fff,
+		      0px 0px 25px #fff,
+		      0px 0px 50px #fff,
+		      0px 0px 50px #fff,
+		      0px 0px 50px #7B96B8,
+		      0px 0px 150px #7B96B8,
+		      0px 10px 100px #7B96B8,
+		      0px 10px 100px #7B96B8,
+		      0px 10px 100px #7B96B8,
+		      0px 10px 100px #7B96B8,
+		      0px -10px 100px #7B96B8,
+		      0px -10px 100px #7B96B8;
+	    }
 	}
 </style>
