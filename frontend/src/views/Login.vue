@@ -56,7 +56,7 @@
 		  		if (this.user.username && this.user.pass) { 
 		  			sendAjax('http://localhost:3000/userlogin', 'post', userJson)
 					    .then((response) => {
-					        this.$router.push ({path:'main'})       
+					        this.$router.push ({path:'/'})       
 					    },
 					    (response) => {
 					    	this.headerText = 'User not found! Please sign up.'
@@ -71,6 +71,7 @@
 		  		this.isActive = false;
 		  	},
 		  	closeModal: function () {
+		  		this.headerText = 'We greet you! Please log in or register.';
 		  		this.modalVisible = false;
 		  	}
 	  	}	

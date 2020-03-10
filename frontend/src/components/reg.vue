@@ -48,7 +48,8 @@
 		  		console.log(this.user.username);
 		  		sendAjax('http://localhost:3000/usercheckname', 'post', usernameJson)
 					.then((response) => {
-						alert ('registration successful'); 
+						alert ('registration successful');
+						 
 					    console.log(response);     
 				    },
 				    (response) => {

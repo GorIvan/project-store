@@ -54,11 +54,11 @@ app.post('/usercheckname', function (req, res) {
 
 
 function writeNewUser (user, database) {
-  var newdatabase = database;
+  let newdatabase = database;
   newdatabase.push(user);
-  var contentJson = JSON.parse(newdatabase);
+  var contentJson = JSON.stringify(newdatabase);
   console.log (contentJson);
-  fs.writeFile('database.json', contentJson);
+  fs.writeFile("database.json", contentJson, function(err) {});
 }
 
 
