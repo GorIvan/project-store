@@ -1,32 +1,34 @@
 <template>
-  <div class="login_block">
-  	
-  	<modal :visible="this.modalVisible" @close='closeModal'>
-  		<template v-slot:modal-content>
-			<registration />
-  		</template>
-  	</modal>
+    <div class="login_block"> 	
+	  	<modal :visible="this.modalVisible" @close='closeModal'>
+	  		<template v-slot:modal-content>
+				<registration />
+	  		</template>
+	  	</modal>
 
-  	<span class="hello">
-  		{{headerText}}
-  	</span>
-    <div class="login_form"> 
-    	<div>
-	    	<div class="input_block">
-	    		<input type="text" id="login_username" class="text-input" maxlength="20" placeholder="Login or email" v-model="user.username">
+	  	<span class="hello">
+	  		{{headerText}}
+	  	</span>
+	    <div class="login_form"> 
+	    	<div>
+		    	<div class="input_block" v-bind:class="{accent_input: userAccent}">
+		    		<input type="text" id="login_username" class="text-input" maxlength="20" placeholder="Login or email" v-model="user.username">
+		    	</div>
+		    	<div class="input_block" v-bind:class="{accent_input: passAccent}">
+		    		<input type="text" id="login_pass" class="text-input" maxlength="20" placeholder="Password" v-model="user.pass">
+		    	</div>
+		    	<button class="button" v-on:click="signIn()">
+		    		Sign In
+		    	</button>
 	    	</div>
-	    	<div class="input_block">
-	    		<input type="text" id="login_pass" class="text-input" maxlength="20" placeholder="Password" v-model="user.pass">
-	    	</div>
-	    	<button class="button" v-on:click="signIn()">
-	    		Sign In
-	    	</button>
-    	</div>
-    	<div class="registration" v-bind:class="{backlightSignUp: isActive}" v-on:click="openSignUp()">
-			Sign Up
-		</div>
+	    	<div class="registration" v-bind:class="{backlightSignUp: isActive}" v-on:click="openSignUp()">
+				Sign Up
+			</div>
+	    </div>
+	    <div class="info">
+	    	This is a demo site. You can log in as an existing user (user: admin, pass: 111) or register. The products on the site are not real! Photos used for demonstration!
+	    </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -40,6 +42,8 @@
 				modalVisible: false,
 				headerText: 'We greet you! Please log in or register.',
 				isActive: false,
+				userAccent: false,
+				passAccent: false,
 				user: {
 					username: '', 
 					pass: ''
@@ -56,14 +60,14 @@
 		  		if (this.user.username && this.user.pass) { 
 		  			sendAjax('http://localhost:3000/userlogin', 'post', userJson)
 					    .then((response) => {
-					        this.$router.push ({path:'/'})       
+					        this.$router.push ({path:'/home'})   
 					    },
 					    (response) => {
 					    	this.headerText = 'User not found! Please sign up.'
-					    	this.isActive = true;
+					    	this.isActive = true
 					    })
     			} else {
-    				alert('введите данные')
+    				this.headerText = 'Fill all fields!!'
     			}
 		  	},
 		  	openSignUp: function () {
@@ -72,7 +76,7 @@
 		  	},
 		  	closeModal: function () {
 		  		this.headerText = 'We greet you! Please log in or register.';
-		  		this.modalVisible = false;
+		  		this.modalVisible = false;	  		
 		  	}
 	  	}	
 	}
@@ -112,7 +116,11 @@
 		width: 350px;
 		height: 450px;
 	}
-	/*конечно же берем в интернетах уже готовый стиль чтобы выделить нашу информацию =)*/
+	.info {
+		color: black;
+		font-size: 18px;
+		margin-top: 100px;
+	}
 	@keyframes blur {
 	  	from {
 		    text-shadow:0px 0px 10px #fff,

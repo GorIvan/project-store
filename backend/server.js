@@ -14,16 +14,24 @@ app.use(function (req, res, next) {
   next();
 });
 
+
+class Users {
+  constructor (name, pass, id) {
+    this.username = name;
+    this.pass = pass;
+    this.id = id;
+  }
+}
+
 // проверяем логин/пароль
 app.post('/userlogin', function (req, res) { 
     var contentRec = JSON.parse(req.body);
 
-    fs.readFile("database.json", 'utf-8', function (err, content) {
+    fs.readFile("./data/users.json", 'utf-8', function (err, content) {
       var contentNoJson = JSON.parse(content);
       var result = contentNoJson.find(function(item, index, array) {
          return (item.username == contentRec.username && item.pass == contentRec.pass)
-      });
-          
+      });          
       if (result) {
         res.status(200);
         res.send(JSON.stringify(result.id));
@@ -34,10 +42,12 @@ app.post('/userlogin', function (req, res) {
     }); 
 });
 
-// проверяем наличие юзера в базе при регистрации
+// проверяем наличие юзера в базе при регистрации и при необходимости создаем новый экземпляр
+// который записываем в 'базу'
 app.post('/usercheckname', function (req, res) { 
-    var contentRec = JSON.parse(req.body);    
-    fs.readFile("database.json", 'utf-8', function (err, content) {
+    var contentRec = JSON.parse(req.body); 
+
+    fs.readFile("./data/users.json", 'utf-8', function (err, content) {
       var contentNoJson = JSON.parse(content);
       var result = contentNoJson.find(function(item, index, array) {
          return (item.username == contentRec.username)
@@ -47,17 +57,30 @@ app.post('/usercheckname', function (req, res) {
         res.send(JSON.stringify('false'));
         writeNewUser(contentRec, contentNoJson);
       } else {
+        res.status(400);
         res.send(JSON.stringify('true'));
       }     
     }); 
 });
 
+// выводим продукты на стартовую main страницу
+app.post('/products', function (req, res) {
+  fs.readFile("./data/products.json", 'utf-8', function (err, content) {
+    if (content) {
+      res.status(200);
+      res.send(JSON.stringify(content));
+    } else {
+      res.status(401);
+      res.send("Products not found");
+    }     
+  }); 
+});
 
 function writeNewUser (user, database) {
   let newdatabase = database;
-  newdatabase.push(user);
+  let newUser = new Users (user.username, user.pass, database.length + 1);
+  newdatabase.push(newUser);
   var contentJson = JSON.stringify(newdatabase);
-  console.log (contentJson);
   fs.writeFile("database.json", contentJson, function(err) {});
 }
 

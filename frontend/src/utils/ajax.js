@@ -10,7 +10,6 @@ function sendAjax(url, method, data) {
         xhr.onreadystatechange = function() { 
             if(xhr.readyState == 4) {
                 let response = JSON.parse(xhr.responseText);
-                console.log(response);
                 if(this.status == 200) {
                     resolve(response);
                 } else {

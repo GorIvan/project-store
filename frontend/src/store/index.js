@@ -5,33 +5,21 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-    	users: [
-    		{  		
-    			login: 'vano',
-  				pass: 'coronovirus',
-  				content: 'ohrenet, ono rabotaet'
-  			},
-  			{
-  				login: 'admin',
-  				pass: 'admin',
-  				content: 'admin entered'
-  			}
-    	]
+    	user: {},
+      goods: [],
+      usersGoods:[]
     },
   	getters: {
-  		getLogin(state) {
-    		return state.login
-   		},
-    	getPass(state) {
-    		return state.users		
-    	}, 
-    	getContent(state) {
-    		return (state.content + "!")	
-    	}
+      getGoods(state) {
+        return state.goods
+      },
+  		getUsername(state) {
+    		return state.user.username
+   		}
   	},
     mutations: {
-  	    setName(state, value) {
-    		state.content = value
+  	    setGoods(state, value) {
+    		  state.goods = value.slice()
     	}
     },
     actions: {

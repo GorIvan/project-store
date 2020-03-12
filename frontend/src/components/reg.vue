@@ -45,16 +45,12 @@
 		  	},
 		  	sendUser: function () {
 		  		let usernameJson = JSON.stringify(this.user);
-		  		console.log(this.user.username);
 		  		sendAjax('http://localhost:3000/usercheckname', 'post', usernameJson)
 					.then((response) => {
-						alert ('registration successful');
-						 
-					    console.log(response);     
+						this.$router.push ({path:'/main'})   
 				    },
 				    (response) => {
-				    	alert ('this username is already taken');    
-				    	console.log(response);  
+				    	alert ('this username is already taken')    
 				    })
 		  	}
 		}  			
