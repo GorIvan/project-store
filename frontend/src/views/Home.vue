@@ -31,7 +31,8 @@
 				renderingGoods: [],  //в этом массиве храняться отображаемые товары 
 				inputPrice: '',      
 				inputProduct: '',
-				buttonSortText: 'Sort ascending'     	 
+				buttonSortText: 'Sort ascending',
+				buttonSortState: true     	 
 			}
 		},
 		//в начале жизненного цикла этого компонента запрашиваем на сервере товары
@@ -55,7 +56,6 @@
 
 			//посимвольный фильтр поиска товара
 			inputsFilter: function() {
-				//обьявляем дополнительные переменные т.к. метод .filter используемый ниже не имеет собственного this и вызывает ошибку
 				let inputProduct = this.inputProduct;
 				let inputPrice = this.inputPrice;	
 				//goodsFiltered - получаем массив товаров, символы имени и цена которых совпадает с введеными пользователем
@@ -67,14 +67,23 @@
 				//обновляем массив для вывода согласно фильтру
 				this.renderingGoods = goodsFiltered;
 			},
+
 			//очистка инпутов и обновление товаров
 			cleanInputs: function () {
 				this.inputPrice = '';
 				this.inputProduct = '';
 				this.renderingGoods = this.getGoods.slice();
 			},
+
+			//сортировка по возрастанию/убыванию цена
 			SortText: function () {
-				
+				if (this.buttonSortText == 'Sort ascending') {
+					this.renderingGoods.sort(function(a, b){return a.cost - b.cost});
+					this.buttonSortText = 'Sort descending'
+				} else {
+					this.renderingGoods.sort(function(a, b){return b.cost - a.cost});
+					this.buttonSortText = 'Sort ascending'
+				}
 			}
 
 		}
