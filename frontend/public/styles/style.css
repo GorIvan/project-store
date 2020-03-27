@@ -9,7 +9,7 @@
 		border-radius: 50px;
 		margin-top: 45px;
 	}
-	input {
+/*	input {
 		color: #fff;
 		font-size: 15px;
 		padding: 8px;
@@ -22,7 +22,7 @@
 	input:focus{
 	    box-shadow: 3px 3px 10px #333;
 	    background: rgba(3,3,3,.18);
-	}
+	}*/
 	::-webkit-input-placeholder {
     	color: #ddd;
     }

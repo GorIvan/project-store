@@ -13,14 +13,17 @@ export default new Vuex.Store({
       getGoods(state) {
         return state.goods
       },
-  		getUsername(state) {
-    		return state.user.username
+  		getUser(state) {
+    		return state.user
    		}
   	},
     mutations: {
-  	    setGoods(state, value) {
-    		  state.goods = value.slice()
-    	}
+  	  setGoods(state, value) {
+    		state.goods = value.slice()
+    	},
+      setUser(state, value) {
+        Object.assign(state.user, value);
+      }
     },
     actions: {
     },

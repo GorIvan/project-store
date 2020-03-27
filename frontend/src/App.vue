@@ -5,12 +5,8 @@
 </template>
 
 <style>
-	html { 
-		background: url(http://cdn.magdeleine.co/wp-content/uploads/2014/05/3jPYgeVCTWCMqjtb7Dqi_IMG_8251-1400x933.jpg) no-repeat center center fixed; 
-		-webkit-background-size: cover;
-		-moz-background-size: cover;
-		-o-background-size: cover;
-		background-size: cover;
-		overflow: hidden;
+	body {
+		margin: 0;
+		padding: 0;
 	}
 </style>
