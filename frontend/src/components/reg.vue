@@ -47,7 +47,7 @@
 		  		let usernameJson = JSON.stringify(this.user);
 		  		sendAjax('http://localhost:3000/usercheckname', 'post', usernameJson)
 					.then((response) => {
-						this.$router.push ({path:'/main'})   
+						this.$router.push ({path:'/home'})   
 				    },
 				    (response) => {
 				    	alert ('this username is already taken')    
@@ -69,5 +69,19 @@
 		color: #ddd;
 		width: 350px;
 		height: 450px;
+	}
+	input {
+		color: #fff;
+		font-size: 15px;
+		padding: 8px;
+		background: rgba(3,3,3,.1);
+		border: none;
+		width: 100%;
+		height: 100%;
+		border-radius: 50px;
+	}
+	input:focus{
+	    box-shadow: 3px 3px 10px #333;
+	    background: rgba(3,3,3,.18);
 	}
 </style>

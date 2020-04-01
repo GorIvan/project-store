@@ -65,8 +65,8 @@
 		  		if (this.user.username && this.user.pass) { 
 		  			sendAjax('http://localhost:3000/userlogin', 'post', userJson)
 					    .then((response) => {
-					    	console.log(this.user);
-					    	this.setUser(this.user);
+					    	// this.setUser(this.user);
+					    	this.setUser(response);
 					        this.$router.push ({path:'/home'})   
 					    },
 					    (response) => {

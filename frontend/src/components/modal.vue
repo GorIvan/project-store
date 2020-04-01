@@ -65,13 +65,13 @@
 	    display: flex;
 	    justify-content: center;
 	    align-items: center;
+	    cursor: pointer;
 	}    
 	.cross div {
    		width: 16px;
    		height: 2px;
    		background-color: black;
    		position: absolute;
-   		cursor: pointer;
    	}	
    	.cross	div:first-child {
    		transform: rotate(45deg);

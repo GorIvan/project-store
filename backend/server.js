@@ -31,10 +31,10 @@ app.post('/userlogin', function (req, res) {
       var contentNoJson = JSON.parse(content);
       var result = contentNoJson.find(function(item, index, array) {
          return (item.username == contentRec.username && item.pass == contentRec.pass)
-      });          
+      });               
       if (result) {
         res.status(200);
-        res.send(JSON.stringify(result.id));
+        res.send(JSON.stringify(result));
       } else {
         res.status(401);
         res.send(JSON.stringify('User not found'));
@@ -53,9 +53,9 @@ app.post('/usercheckname', function (req, res) {
          return (item.username == contentRec.username)
       });        
       if (!result) {
+        writeNewUser(contentRec, contentNoJson);
         res.status(200);
         res.send(JSON.stringify('false'));
-        writeNewUser(contentRec, contentNoJson);
       } else {
         res.status(400);
         res.send(JSON.stringify('true'));
@@ -76,12 +76,13 @@ app.post('/products', function (req, res) {
   }); 
 });
 
+//создаем новый экземпляр пользователя
 function writeNewUser (user, database) {
   let newdatabase = database;
   let newUser = new Users (user.username, user.pass, database.length + 1);
   newdatabase.push(newUser);
   var contentJson = JSON.stringify(newdatabase);
-  fs.writeFile("database.json", contentJson, function(err) {});
+  fs.writeFile("./data/users.json", contentJson, function(err) {});
 }
 
 
