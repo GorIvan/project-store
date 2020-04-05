@@ -13,7 +13,9 @@
 	::-webkit-input-placeholder {
     	color: #ddd;
     }
-    .button {
+
+    /*кнопки:*/
+    .login-button {
 		font-size: 15px;
   		font-weight: 700;
   		color: #ddd;
@@ -26,7 +28,25 @@
 	    box-shadow: 7px 7px 30px #000;
 	    cursor: pointer;
 	}
-	/*кнопки-треугольники (влево - вправо)*/
+	.home-button {
+		width: 150px;
+		height: 30px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin: 10px;
+		border-radius: 5px;
+		border: 1px solid white;
+		cursor: pointer;
+		transition: all .2s ease-in-out;
+		color: white;
+		background-color: #778899;
+	}
+	.home-button:hover {
+		background-color: #708090;
+	}
+
+	/*кнопки-треугольники*/
 	.triangle {
 		position: absolute;
 		width: 0;

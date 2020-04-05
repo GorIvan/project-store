@@ -11,7 +11,7 @@
 				<input type="text" id="confirm_pass" class="text-input" maxlength="20" placeholder="Confirm password" v-model="confirmpass">
 			</div>
 		</div>	
-		<button class="button" v-on:click="checkUsername()">
+		<button class="login-button" v-on:click="checkUsername()">
 	    		Sign Up
 	    </button>
 	</div>

@@ -7,7 +7,7 @@ export default new Vuex.Store({
     state: {
     	user: {},
       goods: [],
-      usersGoods:[]
+      orderedGoods: []
     },
   	getters: {
       getGoods(state) {
@@ -15,15 +15,32 @@ export default new Vuex.Store({
       },
   		getUser(state) {
     		return state.user
-   		}
+   		},
+      getOrderedGoods (state) {
+        return state.orderedGoods
+      }
   	},
     mutations: {
   	  setGoods(state, value) {
     		state.goods = value.slice()
     	},
       setUser(state, value) {
-        Object.assign(state.user, value);
+        Object.assign(state.user, value)
+      },
+      setOrderedGoods(state, value) {
+        let goods = value;
+        let goodsOrderedIndex = state.orderedGoods.indexOf(goods);
+        if (goodsOrderedIndex == -1) {
+          goods.quantity = 1;
+          state.orderedGoods.push(goods);
+        } else {
+          goods.quantity = ++state.orderedGoods[goodsOrderedIndex].quantity;
+          state.orderedGoods.splice(goodsOrderedIndex, 1, goods);
+        }
       }
+
+
+
     },
     actions: {
     },

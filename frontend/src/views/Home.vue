@@ -17,14 +17,14 @@
 					<input type="text" maxlength="5" placeholder="Price" v-on:keyup="inputsFilter" v-model="inputPrice">
 					<div class="search__icon"></div>
 				</div>	
-				<div  v-on:click="cleanInputs" class="button_home">Clean</div>
+				<div  v-on:click="cleanInputs" class="home-button">Clean</div>
 			</div>
 			<div class="cart mdi mdi-cart-arrow-down" v-on:click="openOrders()">
 				<div class="cart_counter">2</div>
 			</div>
 		</div>
 		<div class="goods">
-			<div v-on:click="SortText" class="button_home SortText">{{buttonSortText}}</div>
+			<div v-on:click="SortText" class="home-button SortText">{{buttonSortText}}</div>
 			<div v-on:click="triangleLeft" class="triangle triangle-left"></div>
 			<div v-on:click="triangleRight" class="triangle triangle-right"></div>	
 			<div class="gallery">
@@ -35,7 +35,7 @@
 				 			<span>model: {{item.title}}</span>
 				 			<span>cost: {{item.cost}}</span>
 				 		</div>
-				 		<div class="plus">+</div>
+				 		<div class="plus" v-on:click="order(item)">+</div>
 				 	</div>
 			 	</div>
 			</div>
@@ -89,6 +89,12 @@
 		},	
 		methods: {
 			...mapMutations(['setGoods']),
+			...mapMutations(['setOrderedGoods']),
+
+			//добавляем товар в "корзину"
+			order: function (item) {
+				this.setOrderedGoods(item)
+			},
 
 			//посимвольный фильтр поиска товара
 			inputsFilter: function() {
@@ -193,25 +199,8 @@
 	    height: 24px;
 	    background: url(../../public/img/ic_search_white.svg) no-repeat;
 	}
-	.button_home {
-		width: 150px;
-		height: 30px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		margin: 10px;
-		border-radius: 5px;
-		border: 1px solid white;
-		cursor: pointer;
-		transition: all .2s ease-in-out;
-		color: white;
-	}
-	.button_home:hover {
-		background-color: #708090;
-	}
 	.SortText {
 		position: absolute;
-		background-color: #778899;
 		top: -50px;
 	}
 	.plus {

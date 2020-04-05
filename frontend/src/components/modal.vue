@@ -58,18 +58,16 @@
 		position: absolute;
 	    width: 20px;
 	    height: 20px;
-	    border: 2px solid black;
-	    border-radius: 50%;
-	    right: -25px;
-	    top: -25px;
+	    right: 5px;
+	    top: 5px;
 	    display: flex;
 	    justify-content: center;
 	    align-items: center;
 	    cursor: pointer;
 	}    
 	.cross div {
-   		width: 16px;
-   		height: 2px;
+   		width: 17px;
+   		height: 1px;
    		background-color: black;
    		position: absolute;
    	}	
@@ -78,5 +76,9 @@
    	}
    	.cross	div:last-child {
    		transform: rotate(-45deg);
+   	}
+   	.cross:hover div {
+   		width: 19px;
+   		height: 2px;
    	}
 </style>

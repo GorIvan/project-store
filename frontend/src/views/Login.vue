@@ -18,7 +18,7 @@
 			    	<div class="input_block" v-bind:class="{accent_input: passAccent}">
 			    		<input type="text" id="login_pass" class="text-input" maxlength="20" placeholder="Password" v-model="user.pass">
 			    	</div>
-			    	<button class="button" v-on:click="signIn()">
+			    	<button class="login-button" v-on:click="signIn()">
 			    		Sign In
 			    	</button>
 		    	</div>
