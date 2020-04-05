@@ -35,7 +35,7 @@
 				 			<span>model: {{item.title}}</span>
 				 			<span>cost: {{item.cost}}</span>
 				 		</div>
-				 		<div class="plus" v-on:click="order(item)">+</div>
+				 		<div class="plus" v-on:click="setOrderedGoods(item)">+</div>
 				 	</div>
 			 	</div>
 			</div>
@@ -90,11 +90,6 @@
 		methods: {
 			...mapMutations(['setGoods']),
 			...mapMutations(['setOrderedGoods']),
-
-			//добавляем товар в "корзину"
-			order: function (item) {
-				this.setOrderedGoods(item)
-			},
 
 			//посимвольный фильтр поиска товара
 			inputsFilter: function() {

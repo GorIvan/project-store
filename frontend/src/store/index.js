@@ -27,6 +27,8 @@ export default new Vuex.Store({
       setUser(state, value) {
         Object.assign(state.user, value)
       },
+
+      //добавление заказанного товара в корзину
       setOrderedGoods(state, value) {
         let goods = value;
         let goodsOrderedIndex = state.orderedGoods.indexOf(goods);
@@ -37,6 +39,20 @@ export default new Vuex.Store({
           goods.quantity = ++state.orderedGoods[goodsOrderedIndex].quantity;
           state.orderedGoods.splice(goodsOrderedIndex, 1, goods);
         }
+      },
+      //управление кол-вом в корзине
+      setChangeQuantity (state, obj) {
+        let goods = state.orderedGoods[obj.index];
+        if (obj.ChangeQuantity == false && goods.quantity > 1) {
+          --goods.quantity;
+          state.orderedGoods.splice(obj.index, 1, goods);
+        } else if (obj.ChangeQuantity == true) {
+          ++goods.quantity;
+          state.orderedGoods.splice(obj.index, 1, goods);
+        }
+      },
+      setRemoveGoods (state, index) {
+        state.orderedGoods.splice(index, 1)
       }
 
 

@@ -4,18 +4,18 @@
 			Cart
 		</div>
 		<div class="orders-body">
-			<div class="orders-body__item orders-block" v-for="item in this.getOrderedGoods">
-				<div class="cross">
+			<div class="orders-body__item orders-block" v-for="(item, index) in this.getOrderedGoods">
+				<div class="cross" v-on:click="setRemoveGoods(index)">
 					<div></div>
 					<div></div>
 				</div>
 				<img v-bind:src="item.img">
 				<div class="content">
-					<div class="title">{{item.title}}<!-- Xiaomi Mi Note 10 --></div>
+					<div class="title">{{item.title}}</div>
 					<div class="counter">
-						<div class="minus">-</div>
+						<div class="minus" v-on:click="setChangeQuantity({index: index, ChangeQuantity:false})">-</div>
 						<div class="number">{{item.quantity}}</div>
-						<div class="plus">+</div>
+						<div class="plus" v-on:click="setChangeQuantity({index: index, ChangeQuantity:true})">+</div>
 					</div>
 					<div class="price">{{toPrice(item.cost)}} UAH</div>
 				</div>
@@ -48,6 +48,8 @@
 		},			
 	  	methods: {
 	  		...mapMutations(['setOrderedGoods']),
+	  		...mapMutations(['setChangeQuantity']),
+	  		...mapMutations(['setRemoveGoods']),
 
 	  		toPrice: function (number) {
 	  			return number.toLocaleString()
@@ -79,10 +81,8 @@
 		background-color: white;
 		border-radius: 6px;
 	}
-	.orders-head {
-		font-size: 23px;
-	}
 	.orders-block {
+		font-size: 22px;
 		display: flex;
 		align-items: center;
 		width: 690px;
@@ -134,7 +134,6 @@
    	.content {
    		display: inline-flex;
    		align-items: center;
-	    font-size: 20px;
    		width: 564px;
    	}
    	.content *{
