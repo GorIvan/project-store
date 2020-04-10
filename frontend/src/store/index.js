@@ -7,29 +7,43 @@ export default new Vuex.Store({
     state: {
     	user: {},
       goods: [],
-      orderedGoods: []
+      orderedGoods: [],
+      orderDetailsVisible: false,
+      orderVisible: false
     },
   	getters: {
-      getGoods(state) {
+      getGoods (state) {
         return state.goods
       },
-  		getUser(state) {
+  		getUser (state) {
     		return state.user
    		},
       getOrderedGoods (state) {
         return state.orderedGoods
+      },
+      getOrderDetailsVisible (state) {
+        return state.orderDetailsVisible
+      },
+      getOrderVisible (state) {
+        return state.orderVisible
       }
   	},
     mutations: {
-  	  setGoods(state, value) {
+  	  setGoods (state, value) {
     		state.goods = value.slice()
     	},
-      setUser(state, value) {
+      setUser (state, value) {
         Object.assign(state.user, value)
+      },
+      setOrderDetailsVisible (state, value) {
+        state.orderDetailsVisible = value
+      },
+      setOrderVisible(state, value) {
+        state.orderVisible = value
       },
 
       //добавление заказанного товара в корзину
-      setOrderedGoods(state, value) {
+      setOrderedGoods (state, value) {
         let goods = value;
         let goodsOrderedIndex = state.orderedGoods.indexOf(goods);
         if (goodsOrderedIndex == -1) {

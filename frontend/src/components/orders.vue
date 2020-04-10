@@ -1,31 +1,35 @@
 <template>	
 	<div class="orders">
-		<div class="orders-head orders-block">
-			Cart
-		</div>
-		<div class="orders-body">
-			<div class="orders-body__item orders-block" v-for="(item, index) in this.getOrderedGoods">
-				<div class="cross" v-on:click="setRemoveGoods(index)">
-					<div></div>
-					<div></div>
-				</div>
-				<img v-bind:src="item.img">
-				<div class="content">
-					<div class="title">{{item.title}}</div>
-					<div class="counter">
-						<div class="minus" v-on:click="setChangeQuantity({index: index, ChangeQuantity:false})">-</div>
-						<div class="number">{{item.quantity}}</div>
-						<div class="plus" v-on:click="setChangeQuantity({index: index, ChangeQuantity:true})">+</div>
-					</div>
-					<div class="price">{{toPrice(item.cost)}} UAH</div>
-				</div>
-			</div>
+		<orderdetails />
 
-		</div>
-		<div class="orders-footer orders-block">
-			<div class="orders-footer__checkout">
-				<div class="total">Total: {{toPrice(sumTotal())}} UAH</div>
-				<div class="home-button">Checkout</div>
+		<div v-show="this.getOrderVisible">
+			<div class="orders-head orders-block">
+				Cart
+			</div>
+			<div class="orders-body">
+				<div class="orders-body__item orders-block" v-for="(item, index) in this.getOrderedGoods">
+					<div class="cross" v-on:click="setRemoveGoods(index)">
+						<div></div>
+						<div></div>
+					</div>
+					<img v-bind:src="item.img">
+					<div class="content">
+						<div class="title">{{item.title}}</div>
+						<div class="counter">
+							<div class="minus unselectable" v-on:click="setChangeQuantity({index: index, ChangeQuantity:false})">-</div>
+							<div class="number">{{item.quantity}}</div>
+							<div class="plus unselectable" v-on:click="setChangeQuantity({index: index, ChangeQuantity:true})">+</div>
+						</div>
+						<div class="price">{{toPrice(item.cost)}} UAH</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="orders-footer orders-block">
+				<div class="orders-footer__checkout">
+					<div class="total">Total: {{toPrice(sumTotal())}} UAH</div>
+					<div class="home-button" v-on:click="openOrderdetails">Checkout</div>
+				</div>
 			</div>
 		</div>	
 	</div>
@@ -34,7 +38,7 @@
 
 
 <script>
-	import sendAjax from '../utils/ajax';
+	import orderdetails from './orderdetails';
 	import { mapMutations, mapGetters } from 'vuex';
 
 	export default {
@@ -43,13 +47,21 @@
 			return {
 			}
 		},
+		components: {
+	      orderdetails: orderdetails
+	    },
 		computed: {
-			...mapGetters(['getOrderedGoods'])
+			...mapGetters(['getOrderedGoods']),
+			...mapGetters(['getOrderVisible']),
+			...mapGetters(['getOrderDetailsVisible'])
 		},			
 	  	methods: {
 	  		...mapMutations(['setOrderedGoods']),
 	  		...mapMutations(['setChangeQuantity']),
 	  		...mapMutations(['setRemoveGoods']),
+	  		...mapMutations(['setOrderDetailsVisible']),
+	  		...mapMutations(['setOrderVisible']),
+
 
 	  		toPrice: function (number) {
 	  			return number.toLocaleString()
@@ -60,17 +72,14 @@
 	  				sum = sum + value.cost * value.quantity
 				});
 	  			return sum;
-	  		}
-		  	// sendUser: function () {
-		  	// 	let usernameJson = JSON.stringify(this.user);
-		  	// 	sendAjax('http://localhost:3000/usercheckname', 'post', usernameJson)
-					// .then((response) => {
-					// 	this.$router.push ({path:'/main'})   
-				 //    },
-				 //    (response) => {
-				 //    	alert ('this username is already taken')    
-				 //    })
-		  	// }
+	  		},
+
+			openOrderdetails: function () {
+				if (this.getOrderedGoods.length > 0) {
+					this.setOrderDetailsVisible(true);
+					this.setOrderVisible(false);
+				}		
+			}
 		}  			
 	}
 </script>
@@ -93,6 +102,8 @@
 	.orders-body {
 		margin-top: 20px;
 		margin-bottom: 20px;
+		max-height: 450px;
+		overflow: auto;
 	}
 	.orders-body__item {
 		position: relative;

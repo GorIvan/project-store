@@ -9,18 +9,18 @@
 	    <div class="header">
 	    	<div class="logo">Logo</div>
 	    	<div class="filters">
-	    		<div class="header_search_block">
+	    		<div class="header_search_block unselectable">
 					<input type="text" maxlength="20" placeholder="Product" v-on:keyup="inputsFilter" v-model="inputProduct">
 					<div class="search__icon"></div>
 				</div>
-				<div class="header_search_block">	
+				<div class="header_search_block unselectable">	
 					<input type="text" maxlength="5" placeholder="Price" v-on:keyup="inputsFilter" v-model="inputPrice">
 					<div class="search__icon"></div>
 				</div>	
 				<div  v-on:click="cleanInputs" class="home-button">Clean</div>
 			</div>
-			<div class="cart mdi mdi-cart-arrow-down" v-on:click="openOrders()">
-				<div class="cart_counter">2</div>
+			<div class="cart mdi mdi-cart-arrow-down" v-on:click="openOrders()"> 
+				<div v-show="this.cartCounterVisible" class="cart_counter unselectable">{{checkCartCounter()}}</div>
 			</div>
 		</div>
 		<div class="goods">
@@ -29,24 +29,28 @@
 			<div v-on:click="triangleRight" class="triangle triangle-right"></div>	
 			<div class="gallery">
 				<div class="gallery-hidden" v-bind:style="{transform: translate}"> 
-					<div class="block" v-for="item in renderingGoods">
+					<div class="block" v-for="(item, index) in renderingGoods">
 				 		<img v-bind:src="item.img">
 				 		<div>
 				 			<span>model: {{item.title}}</span>
 				 			<span>cost: {{item.cost}}</span>
 				 		</div>
-				 		<div class="plus" v-on:click="setOrderedGoods(item)">+</div>
+				 		<div class="plus unselectable" v-on:click="setOrderedGoods(item)">+</div>
 				 	</div>
 			 	</div>
 			</div>
-		</div>	
+		</div>
+
+		<info />	
  	</div>
 </template>
 
 
 <script>
 	import orders from '../components/orders';
+	import orderdetails from '../components/orderdetails';
 	import modal from '../components/modal';
+	import info from '../components/info';
 	import sendAjax from '../utils/ajax';
 	import { mapMutations, mapGetters } from 'vuex';
 
@@ -60,12 +64,15 @@
 				buttonSortText: 'Sort ascending',
 				translate: 'translateX(0)',
 				px: 0,
-				modalVisible: false
+				modalVisible: false, 
+				cartCounterVisible: false
 			}
 		},
 		components: {
 	      modal: modal,
-	      orders: orders
+	      orders: orders,
+	      orderdetails: orderdetails,
+	      info: info
 	    },
 		//после создания этого компонента 
 		//проверяем залогинился ли пользователь - если нет то возвращаемся на страницу авторизации
@@ -77,7 +84,7 @@
 			sendAjax('http://localhost:3000/products', 'post')
 				.then((response) => {
 					this.setGoods(JSON.parse(response));
-					this.renderingGoods = this.getGoods.slice(); 
+					this.renderingGoods = this.getGoods.slice();
 				},
 				(response) => {
 					console.log('No goods')
@@ -85,11 +92,14 @@
 		},
 		computed: {
 			...mapGetters(['getUser']),
-			...mapGetters(['getGoods'])
+			...mapGetters(['getGoods']),
+			...mapGetters(['getOrderedGoods'])
 		},	
 		methods: {
 			...mapMutations(['setGoods']),
 			...mapMutations(['setOrderedGoods']),
+	  		...mapMutations(['setOrderDetailsVisible']),
+	  		...mapMutations(['setOrderVisible']),
 
 			//посимвольный фильтр поиска товара
 			inputsFilter: function() {
@@ -116,7 +126,7 @@
 				this.px = 0;
 			},
 
-			//сортировка по возрастанию/убыванию цена
+			//сортировка по возрастанию/убыванию цены
 			SortText: function () {
 				if (this.buttonSortText == 'Sort ascending') {
 					this.renderingGoods.sort(function(a, b){return a.cost - b.cost});
@@ -142,13 +152,28 @@
 				}
 			},
 
+			checkCartCounter:function () {
+				if (this.getOrderedGoods.length > 0) {
+					let cartCounter = 0;
+					this.cartCounterVisible = true;
+					this.getOrderedGoods.forEach(function (value, index) {
+		  				cartCounter = cartCounter + value.quantity
+					});
+					return cartCounter;
+				} else {
+					this.cartCounterVisible = false
+				}
+			},
 			openOrders: function () {
-				this.modalVisible = true;	
+				if (this.getOrderedGoods.length > 0) {
+					this.modalVisible = true;
+					this.setOrderVisible(true);
+					this.setOrderDetailsVisible(false);
+				}
 			},
 			closeModal: function () {
 		  		this.modalVisible = false;	  		
 		  	}
-
 		}
 	}				
 </script>
@@ -212,6 +237,9 @@
 		border-radius: 50%;
 		border: 2px solid #2F4F4F;
 		cursor: pointer;	
+	}
+	.plus:active {
+		transform: scale(.9);
 	}
 	.header {
 		display: flex;
