@@ -11,11 +11,11 @@
 	    	<div class="filters">
 	    		<div class="header_search_block unselectable">
 					<input type="text" maxlength="20" placeholder="Product" v-on:keyup="inputsFilter" v-model="inputProduct">
-					<div class="search__icon"></div>
+					<div class="search-icon"></div>
 				</div>
 				<div class="header_search_block unselectable">	
 					<input type="text" maxlength="5" placeholder="Price" v-on:keyup="inputsFilter" v-model="inputPrice">
-					<div class="search__icon"></div>
+					<div class="search-icon"></div>
 				</div>	
 				<div  v-on:click="cleanInputs" class="home-button">Clean</div>
 			</div>
@@ -35,7 +35,8 @@
 				 			<span>model: {{item.title}}</span>
 				 			<span>cost: {{item.cost}}</span>
 				 		</div>
-				 		<div class="plus unselectable" v-on:click="setOrderedGoods(item)">+</div>
+				 		<div class="check-icon mdi mdi-check-bold"></div>
+						<div class="plus unselectable" v-on:click="setOrderedGoods(item)">+</div>	
 				 	</div>
 			 	</div>
 			</div>
@@ -211,7 +212,7 @@
 	.header_search_block {
 		position: relative;
 	}
-	.search__icon {
+	.search-icon {
 		position: absolute;
 	    top: 15px;
 	    right: 15px;
@@ -240,6 +241,15 @@
 	}
 	.plus:active {
 		transform: scale(.9);
+	}
+	.check-icon {
+		position: absolute;
+		color: #2F4F4F;
+		font-size: 30px;
+		bottom: -5px;
+		left: 5px;
+		padding: 0;
+		margin: 0; 	
 	}
 	.header {
 		display: flex;

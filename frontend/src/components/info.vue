@@ -1,7 +1,7 @@
 <template>	
 	<div class="info">	
-		<div class="copyright">copyright</div>
-		<div>Links</div>
+		<div class="copyright">&copy; copyright</div>
+		<div>Some links</div>
 	</div>
 
 </template>

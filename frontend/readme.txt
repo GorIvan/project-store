@@ -1,3 +1,3 @@
 console:
 
-npm run serv
+npm run serve
